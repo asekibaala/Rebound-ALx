@@ -5,3 +5,5 @@ https://www.youtube.com/watch?v=kPRA0W1kECg
 https://www.youtube.com/watch?v=yb0PY3LX2x8&t=2s
 https://www.geeksforgeeks.org/sorting-algorithms/
 https://youtu.be/lyZQPjUT5B4
+https://youtu.be/ROalU379l3U
+https://youtu.be/Ns4TPTC8whw
