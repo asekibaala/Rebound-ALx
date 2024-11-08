@@ -28,5 +28,3 @@ This database schema models the relationships between movies, actors, contact de
 - **Actor - Stuntman**: One-to-One (1 : 1)
 
 ---
-
-This README provides a quick overview of the database structure and relationships for easier reference.
