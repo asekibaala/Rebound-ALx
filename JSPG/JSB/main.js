@@ -28,11 +28,20 @@ class Ball {
     this.color = color;
     this.size = size;
   }
+
+  draw() {
+    ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+    ctx.fill();
+  }
 }
 
-draw() {
-  ctx.beginPath();
-  ctx.fillStyle = this.color;
-  ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
-  ctx.fill();
-}
+
+
+const testBall = new Ball(50, 100, 4, 4, "blue", 10);
+
+testBall.x;
+testBall.size;
+testBall.color;
+testBall.draw();
