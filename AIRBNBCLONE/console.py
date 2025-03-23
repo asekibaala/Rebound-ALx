@@ -96,3 +96,9 @@ class HBNBCommand(cmd.Cmd):
             return
         setattr(obj, args[2], eval(args[3]))
         obj.save()
+    def do_quit(self, args):
+        """Exits the console"""
+        return True
+
+if __name__ == "__main__":
+    HBNBCommand().cmdloop()        
