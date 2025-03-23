@@ -85,7 +85,7 @@ class HBNBCommand(cmd.Cmd):
             print([str(obj) for key, obj in objs.items() if key.startswith(args)])
         else:
             print("** class doesn't exist **")
-            
+
     def default(self, line):
         """Handles commands in the format <class name>.all()"""
         if "." in line:
@@ -122,6 +122,30 @@ class HBNBCommand(cmd.Cmd):
             return
         setattr(obj, args[2], eval(args[3]))
         obj.save()
+
+    def do_count(self, args):
+        """Counts the number of instances of a class"""
+        if not args:
+            print("** class name missing **")
+            return
+        if args not in self.classes:
+            print("** class doesn't exist **")
+            return
+        count = sum(1 for key in storage.all() if key.startswith(args + "."))
+        print(count)
+
+    def default(self, line):
+        """Handles commands in the format <class name>.count()"""
+        if "." in line:
+            class_name, command = line.split(".", 1)
+            if class_name in self.classes and command == "count()":
+                self.do_count(class_name)
+            elif class_name in self.classes and command == "all()":
+                self.do_all(class_name)
+            else:
+                print("** command not found **")
+        else:
+            print("** command not found **")
 
     def do_quit(self, args):
         """Exits the console"""
