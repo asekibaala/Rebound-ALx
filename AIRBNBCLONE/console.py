@@ -5,24 +5,38 @@ import cmd
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
-
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
     """Command interpreter for the AirBnB clone"""
     prompt = "(hbnb) "
 
+    classes = {
+        "BaseModel": BaseModel,
+        "User": User,
+        "Place": Place,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Review": Review
+    }
+
     def do_create(self, args):
         """Creates a new instance of a class"""
         if not args:
             print("** class name missing **")
             return
-        try:
-            new_instance = eval(args)()
-            new_instance.save()
-            print(new_instance.id)
-        except NameError:
+        if args not in self.classes:
             print("** class doesn't exist **")
+            return
+        new_instance = self.classes[args]()
+        new_instance.save()
+        print(new_instance.id)
 
     def do_show(self, args):
         """Shows the string representation of an instance"""
@@ -30,7 +44,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
             return
-        if args[0] not in globals():
+        if args[0] not in self.classes:
             print("** class doesn't exist **")
             return
         if len(args) == 1:
@@ -49,7 +63,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
             return
-        if args[0] not in globals():
+        if args[0] not in self.classes:
             print("** class doesn't exist **")
             return
         if len(args) == 1:
@@ -67,7 +81,7 @@ class HBNBCommand(cmd.Cmd):
         objs = storage.all()
         if not args:
             print([str(obj) for obj in objs.values()])
-        elif args in globals():
+        elif args in self.classes:
             print([str(obj) for key, obj in objs.items() if key.startswith(args)])
         else:
             print("** class doesn't exist **")
@@ -78,7 +92,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
             return
-        if args[0] not in globals():
+        if args[0] not in self.classes:
             print("** class doesn't exist **")
             return
         if len(args) == 1:
@@ -97,9 +111,16 @@ class HBNBCommand(cmd.Cmd):
             return
         setattr(obj, args[2], eval(args[3]))
         obj.save()
+
     def do_quit(self, args):
         """Exits the console"""
         return True
 
+    def do_EOF(self, args):
+        """Exits the console"""
+        print()
+        return True
+
+
 if __name__ == "__main__":
-    HBNBCommand().cmdloop()        
+    HBNBCommand().cmdloop()
