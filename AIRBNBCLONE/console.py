@@ -86,17 +86,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
-    def default(self, line):
-        """Handles commands in the format <class name>.all()"""
-        if "." in line:
-            class_name, command = line.split(".", 1)
-            if class_name in self.classes and command == "all()":
-                self.do_all(class_name)
-            else:
-                print("** command not found **")
-        else:
-            print("** command not found **")
-
     def do_update(self, args):
         """Updates an instance based on the class name and id"""
         args = args.split()
@@ -135,13 +124,21 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def default(self, line):
-        """Handles commands in the format <class name>.count()"""
+        """Handles commands in the format <class name>.command(<id>)"""
         if "." in line:
             class_name, command = line.split(".", 1)
-            if class_name in self.classes and command == "count()":
-                self.do_count(class_name)
-            elif class_name in self.classes and command == "all()":
-                self.do_all(class_name)
+            if "(" in command and ")" in command:
+                command_name, args = command.split("(", 1)
+                args = args[:-1]  # Remove the closing parenthesis
+                args = args.replace('"', '').replace("'", "")  # Remove quotes from arguments
+                if command_name == "show":
+                    self.do_show(f"{class_name} {args}")
+                elif command_name == "all":
+                    self.do_all(class_name)
+                elif command_name == "count":
+                    self.do_count(class_name)
+                else:
+                    print("** command not found **")
             else:
                 print("** command not found **")
         else:
