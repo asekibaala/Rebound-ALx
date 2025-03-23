@@ -3,7 +3,7 @@
 
 import uuid
 from datetime import datetime
-from models import storage
+#from models import storage
 
 
 class BaseModel:
@@ -33,6 +33,7 @@ class BaseModel:
 
     def save(self):
         """Updates the `updated_at` attribute and saves the instance to storage"""
+        from models import storage  # Lazy import to avoid circular dependency
         self.updated_at = datetime.now()
         storage.new(self)
         storage.save()
