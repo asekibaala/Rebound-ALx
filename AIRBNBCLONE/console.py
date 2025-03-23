@@ -85,6 +85,17 @@ class HBNBCommand(cmd.Cmd):
             print([str(obj) for key, obj in objs.items() if key.startswith(args)])
         else:
             print("** class doesn't exist **")
+            
+    def default(self, line):
+        """Handles commands in the format <class name>.all()"""
+        if "." in line:
+            class_name, command = line.split(".", 1)
+            if class_name in self.classes and command == "all()":
+                self.do_all(class_name)
+            else:
+                print("** command not found **")
+        else:
+            print("** command not found **")
 
     def do_update(self, args):
         """Updates an instance based on the class name and id"""
