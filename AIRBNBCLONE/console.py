@@ -137,6 +137,8 @@ class HBNBCommand(cmd.Cmd):
                     self.do_all(class_name)
                 elif command_name == "count":
                     self.do_count(class_name)
+                elif command_name == "destroy":
+                    self.do_destroy(f"{class_name} {args}")
                 else:
                     print("** command not found **")
             else:
