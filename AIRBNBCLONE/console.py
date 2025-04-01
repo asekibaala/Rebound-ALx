@@ -109,7 +109,11 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 3:
             print("** value missing **")
             return
-        setattr(obj, args[2], eval(args[3]))
+        # Handle the value as a string if it is enclosed in quotes
+        value = args[3]
+        if value.startswith('"') and value.endswith('"'):
+            value = value[1:-1]  # Remove the surrounding quotes
+        setattr(obj, args[2], value)
         obj.save()
 
     def do_count(self, args):
@@ -124,14 +128,20 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def default(self, line):
-        """Handles commands in the format <class name>.command(<id>)"""
+        """Handles commands in the format <class name>.command(<id>, <attribute name>, <attribute value>)"""
         if "." in line:
             class_name, command = line.split(".", 1)
             if "(" in command and ")" in command:
                 command_name, args = command.split("(", 1)
                 args = args[:-1]  # Remove the closing parenthesis
                 args = args.replace('"', '').replace("'", "")  # Remove quotes from arguments
-                if command_name == "show":
+                args_list = args.split(", ")  # Split arguments by comma and space
+                if command_name == "update":
+                    if len(args_list) == 3:
+                        self.do_update(f"{class_name} {args_list[0]} {args_list[1]} {args_list[2]}")
+                    else:
+                        print("** invalid number of arguments **")
+                elif command_name == "show":
                     self.do_show(f"{class_name} {args}")
                 elif command_name == "all":
                     self.do_all(class_name)
